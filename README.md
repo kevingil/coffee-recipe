@@ -1,2 +1,6 @@
-# coffee-recipe
-Generate a coffee bean recipe with information about your beans + OpenAI
+# chatgpt-go
+ChatGPT clone written in Go
+
+This demo uses this go client library: 
+
+github.com/sashabaranov/go-openai
