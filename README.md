@@ -1,5 +1,5 @@
 # chatgpt-go
-ChatGPT clone written in Go
+ChatGPT demo app written in Go
 
 This demo uses this go client library: 
 
