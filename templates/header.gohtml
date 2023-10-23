@@ -1,0 +1,83 @@
+{{define "header"}}
+<!DOCTYPE html>
+<html lang="en" class="light" style="color-scheme: light;">
+
+<head>
+	<title>Coffee Recipe</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+	<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+	<style>
+		body{
+			background:linear-gradient(to bottom, rgb(55, 65, 81), rgb(17, 24, 39), rgb(0, 0, 0))
+		}
+		article a {
+			color: rgb(39, 39, 197);
+			font-weight: bold;
+		}
+		
+		@keyframes fade-in {
+		  from { opacity: 0; }
+		}
+	 
+		@keyframes fade-out {
+		  to { opacity: 0; }
+		}
+	 
+		@keyframes slide-from-right {
+		  from { 
+			transform: translateX(90px);
+			scale: 0.5;
+		}
+		}
+	 
+		@keyframes slide-to-left {
+		  to { 
+			transform: translateX(-90px);
+		}
+		}
+	 
+		.slide-it {
+		  view-transition-name: slide-it;
+		}
+	 
+		::view-transition-old(slide-it) {
+		  animation: 180ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+		  400ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+		}
+		::view-transition-new(slide-it) {
+		  animation: 420ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+		  400ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+		}
+	 </style>
+	
+</head>
+<body class="antialiased flex min-h-screen bg-white flex flex-col items-center">
+	<div class="container max-w-2xl px-1 py-2 sm:py-8 sm:px-6">
+		<!-- Text Header -->
+		<header class="py-4 px-1 sm:px-4">
+			<nav class="">
+				<div class=" max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-2">
+					<a hx-get="/" hx-push-url="true" hx-boost="true" hx-swap="innerHTML transition:true" hx-target="#container" 
+					hx-replace-url="/" class="flex items-center">
+						<span class="text-white self-center uppercase text-2xl font-semibold whitespace-nowrap text-gray-900">
+							Coffee Recipe</span>
+					</a>
+					<div class="md:block w-auto" id="navbar-solid-bg">
+						<ul class="flex flex-col font-medium rounded-lg md:flex-row md:border-0">
+							<li>
+								<a href="https://github.com/kevingil/coffee-recipe"
+									class="text-white block py-2 pl-3 pr-4 rounded md:border-0 hover:underline hover:text-indigo-500 md:p-0 text-gray-900">Github</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+		</header>
+		<div id="container" class="slide-it px-2 sm:px-5">
+			{{end}}

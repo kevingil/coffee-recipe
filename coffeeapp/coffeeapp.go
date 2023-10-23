@@ -20,9 +20,9 @@ func CoffeeApp(w http.ResponseWriter, r *http.Request) {
 	var templateName string
 
 	if isHTMXRequest {
-		templateName = "coffeegpt"
+		templateName = "home"
 	} else {
-		templateName = "page_coffeegpt.html"
+		templateName = "index.gohtml"
 	}
 
 	var response bytes.Buffer
@@ -31,6 +31,27 @@ func CoffeeApp(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	io.WriteString(w, response.String())
+
+}
+
+// Render completion
+func Completion(w http.ResponseWriter, r *http.Request) {
+	isHTMXRequest := r.Header.Get("HX-Request") == "true"
+
+	var response bytes.Buffer
+
+	if isHTMXRequest {
+		if err := templates.Tmpl.ExecuteTemplate(&response, "completion", nil); err != nil {
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+			return
+		}
+	} else {
+		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+		return
+	}
+
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	io.WriteString(w, response.String())
 

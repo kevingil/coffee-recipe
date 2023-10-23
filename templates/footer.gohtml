@@ -1,0 +1,22 @@
+{{define "footer"}}
+
+</div>
+</div>
+
+<script>
+    document.addEventListener('htmx:afterSwap', function (event) {
+  // Check if the event target is the element that was swapped
+  if (event.detail.target.matches("#generateButton")) {
+    // Get the data attribute value from the swapped element
+    const data = event.detail.target.getAttribute('data');
+
+    // Construct the URL with the data and navigate to the new page
+    const newURL = `/new-page?data=${encodeURIComponent(data)}`;
+    console.log(newURL)
+  }
+});
+</script>
+
+</body>
+</html>
+{{end}}

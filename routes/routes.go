@@ -15,6 +15,7 @@ func InitRouter() {
 	// Espresso App
 
 	r.HandleFunc("/", coffeeapp.CoffeeApp).Methods("GET")
+	r.HandleFunc("/components/completion", coffeeapp.Completion).Methods("GET")
 	r.HandleFunc("/api/stream-recipe", coffeeapp.StreamRecipe).Methods("POST")
 	r.HandleFunc("/api/stream-recipe", coffeeapp.StreamRecipe).Methods("GET")
 

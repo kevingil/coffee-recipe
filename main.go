@@ -7,7 +7,7 @@ import (
 	"github.com/kevingil/coffee-recipe/routes"
 )
 
-func init() {
+func main() {
 	//Load env file
 	err := godotenv.Load(".env")
 	if err != nil {
