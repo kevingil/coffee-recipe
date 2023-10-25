@@ -72,24 +72,14 @@ func StreamRecipe(w http.ResponseWriter, r *http.Request) {
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role: openai.ChatMessageRoleSystem,
-				Content: "You're a coffee barista giving a user a recipe and nothing else." +
-					"This recipe must be formatted in markdown with specific line breaks, If you miss any line break <br> as instructed, specially the ones AFTER ALL PERIODS, an innocent civilian will die, don't miss the instructed line breaks, there area going to be a few in your response. <br>" +
-					"Remembet to keep this in mind for your WHOLE response, 2 innocent people will die if you remember the line break first then you forget later in your response. Line breaks are NECESSARY for this reponse." +
-					"A response with a period followed by bold font is UNACCEPTABLE, if that is displayed in the recipe, innocent people will suffer, you must add the <br> between the period and the bold font like this: . <br> **. This is the only acceptable way to format the respone." +
-					"You cannot miss that line break between the period and the ** for bold formatting." +
-					"REMEMBER THERE MUST BE A LINE BREAK AFTER ALL PERIODS LIKE THIS . <br>" +
-					"REMEMBER THERE MUST BE A LINE BREAK AFTER ALL BOLD FONT LIKE THIS ** <br>" +
-					"User many not have all the information, so you need to figure out a recipe with the information you get. Grind amount is not specified, you need to assume the ideal amount for the drink type." +
-					"Regarding brewing methods,for espresso brewing, assume espresso machine. For drip, assume v60. You must try to give the user a full recipe no matter what." +
-					"You must write this in Markdown following STRICT rules on formatting, breaking the rules breaks the UI response for user. This is how to write the response:" +
-					"REMEMBER THERE MUST BE A LINE BREAK AFTER ALL PERIODS LIKE THIS .<br>" +
-					"**Grind Amount** <br> {Your response here. Approximate ideal amount in grams, best pracice, user doesn't know how much they need}.<br>" +
-					"**Yield Amount** <br> {Your response here. Approximate ideal amount in grams, best pracice, user doesn't know how much they need}.<br>" +
-					"**Brew Time** <br> {Your response here. ideal given all parameters}.<br>" +
-					"**Brew Temp** <br> {Your response here. ideal temp for this drink in F/C degs.}.<br>" +
-					"**Aprox Grind Size** <br> {Your response here. Give a recommendation that people can understand regardless of their grinder machine}.<br>" +
-					"REMEMBER THERE MUST BE A LINE BREAK AFTER ALL PERIODS LIKE THIS: .<br>" +
-					"REMEMBER THERE MUST BE A LINE BREAK AFTER ALL BOLD FONTS LIKE THIS: **any bold font** <br> ",
+				Content: "You're a coffee barista tasked with providing a coffee bean recipe in markdown format. The line breaks <br> are important to format the response." +
+					"The user will specify the coffee type, bean process, growing elevation, color, and bean origin in their message." +
+					"Your response should follow this html format, keep responses short, just the measurements:" +
+					"<p><b>Grind Amount</b>[Provide an approximate coffee bean grind amount in grams, and I'd like it to be accurate within +/-1 gram.].</p>" +
+					"<p><b>Yield Amount</b>[Provide an approximate extraction yield amount in grams, and I'd like it to be accurate within +/-1 gram.].</p>" +
+					"<p><b>Brew Time</b>[How long the brew time should take within +/-3sec given all parameters].</p>" +
+					"<p><b>Brew Temp</b>[Ideal brew temperature given all parameters in F/C degrees].</p>" +
+					"Some tips to keep in mind: higher grown beans tend to be more dense, darker roasts result in beans to be more brittle / less dense, the more intense the processing method, the more brittle the bean becomes. Density for common processing methods: Washed > Semiwashed > Honey > Natural",
 			},
 			{
 				Role:    openai.ChatMessageRoleUser,
@@ -97,7 +87,6 @@ func StreamRecipe(w http.ResponseWriter, r *http.Request) {
 			},
 		},
 		Stream: true,
-		Stop:   []string{"For a  coffee with  processed beans grown at an elevation of  and a bean color of rgb(, I would suggest the following:-"},
 	}
 
 	stream, err := client.CreateChatCompletionStream(context.Background(), request)
