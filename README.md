@@ -1,6 +1,6 @@
-# chatgpt-go
-ChatGPT demo app written in Go
+# Coffee Recipe with ChatGPT
+Simple openai completion app to generate a coffee bean recipe.
 
-This demo uses this go client library: 
+Dependencies: 
 
 github.com/sashabaranov/go-openai

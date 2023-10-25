@@ -7,53 +7,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://cdn.tailwindcss.com"></script>
 	<script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-	<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
-	<style>
-		body{
-			background:linear-gradient(to bottom, rgb(55, 65, 81), rgb(17, 24, 39), rgb(0, 0, 0))
-		}
-		article a {
-			color: rgb(39, 39, 197);
-			font-weight: bold;
-		}
-		
-		@keyframes fade-in {
-		  from { opacity: 0; }
-		}
-	 
-		@keyframes fade-out {
-		  to { opacity: 0; }
-		}
-	 
-		@keyframes slide-from-right {
-		  from { 
-			transform: translateX(90px);
-			scale: 0.5;
-		}
-		}
-	 
-		@keyframes slide-to-left {
-		  to { 
-			transform: translateX(-90px);
-		}
-		}
-	 
-		.slide-it {
-		  view-transition-name: slide-it;
-		}
-	 
-		::view-transition-old(slide-it) {
-		  animation: 180ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
-		  400ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
-		}
-		::view-transition-new(slide-it) {
-		  animation: 420ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
-		  400ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
-		}
-	 </style>
+	<link rel="stylesheet" href="/static/main.css">
 	
 </head>
 <body class="antialiased flex min-h-screen bg-white flex flex-col items-center">

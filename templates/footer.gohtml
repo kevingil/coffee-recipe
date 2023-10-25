@@ -4,17 +4,140 @@
 </div>
 
 <script>
-    document.addEventListener('htmx:afterSwap', function (event) {
-  // Check if the event target is the element that was swapped
-  if (event.detail.target.matches("#generateButton")) {
-    // Get the data attribute value from the swapped element
-    const data = event.detail.target.getAttribute('data');
+	//Gather all resources
+	//prompt will be reset after SSE connection close
+	var prompt = "";
+	var recipetype = "";
+	var beanprocess = "";
+	var beanelevtion = "";
+	var beancolor = "";
+	var beanorigin = "";
 
-    // Construct the URL with the data and navigate to the new page
-    const newURL = `/new-page?data=${encodeURIComponent(data)}`;
-    console.log(newURL)
-  }
-});
+
+		//UI controls
+
+		//Bean Elevation slider
+		document.getElementById('bean-elevation').addEventListener('input', function () {
+			const roundedValue = Math.round(this.value / 100) * 100;
+			document.getElementById('elevation-value').textContent = roundedValue + 'masl';
+			this.value = roundedValue; // Snap the slider to the rounded value
+		});
+
+		//Bean color slider
+		document.getElementById("beanSlider").addEventListener("input", function () {
+			const sliderValue = this.value;
+
+			// Calculate the RGB values based on the slider value
+			const r = Math.round(45 + (80 * sliderValue) / 100);
+			const g = Math.round(25 + (50 * sliderValue) / 100);
+			const b = Math.round(10 + (35 * sliderValue) / 100);
+
+			// Set the SVG fill color
+			document.getElementById("beansvg").style.fill = `rgb(${r}, ${g}, ${b})`;
+		});
+
+		//generate prompt
+		function updatePrompt() {
+
+			let res = "";
+			const parser = new DOMParser();
+
+			let param1 = null;
+			const coffeeRadios = document.querySelectorAll('input[name="coffee"]');
+
+			for (const radio of coffeeRadios) {
+				if (radio.checked) {
+					param1 = radio.value;
+					break;
+				}
+			}
+
+			const param2 = document.getElementById("bean-process").value;
+			const param3 = document.getElementById("elevation-value").innerText;
+			const param4 = document.getElementById("beansvg").style.fill;
+			const question = `Drink type: ${param1}.`
+				+ `Bean Process: ${param2}.`
+				+ `Growing elevation: ${param3}.`
+				+ `Color: ${param4}.`;
+				return question;
+		}
+
+	//copy prompt from UI
+
+	//handle stream request
+	//use prompt
+	
+	function streamSSE(p) {
+		let prompt = p;
+		let sseConnection = null;
+	
+			if (sseConnection) {
+				sseConnection.close();
+			}
+	
+			sseConnection = new EventSource(`/api/stream-recipe?question=${encodeURIComponent(prompt)}`);
+			sseConnection.addEventListener("message", function (event) {
+				document.getElementById('result-placeholder').style.display = 'none';
+				res += event.data;
+				renderMarkdown(res);
+	
+			});
+	
+			sseConnection.addEventListener("error", function (event) {
+				sseConnection.close();
+				sseConnection = null;
+				console.log("Stream ended");
+				showTryAgainButton();
+			});
+		}
+	
+	
+	//Event handlers
+	//handle session end
+	//TODO
+
+	// Htmx load
+	htmx.onLoad(function (elt) {
+
+		//stream request if completion page
+
+		//parpse prompt if home page
+		document.getElementById("generate-button").value = updatePrompt();
+		console.log(updatePrompt());
+	})
+	//For updatesc
+	document.getElementById('coffeeDetails').addEventListener('change', function (event) {
+
+		//home page
+		document.getElementById("generate-button").value = updatePrompt();
+		console.log(updatePrompt());
+	});
+	//Swap listener
+	document.addEventListener('htmx:afterSwap', function (event) {
+		// Now you can use the 'data' variable as needed in your JavaScript code
+		console.log("Prompt:", prompt);
+	});
+
+
+
+
+	//prompt user to try again
+	function showTryAgainButton() {
+		const tryAgainElement = document.getElementById('tryagain');
+		tryAgainElement.classList.remove('hidden');
+	}
+
+	// Convert stream to html as it arrives
+	function renderMarkdown(markdown) {
+
+		sseConnection.addEventListener("message", function (event) {
+			document.getElementById('result-placeholder').style.display = 'none';
+
+			document.getElementById('result').innerHTML = marked.parse(markdown);
+
+		});
+	}
+
 </script>
 
 </body>
